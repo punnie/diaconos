@@ -6,12 +6,15 @@ class Movie < ActiveRecord::Base
   serialize :director, Array
   serialize :genres, Array
 
+  has_many :choices, dependent: :destroy
+  has_many :events, through: :choices
+
   before_validation :parse_imdb_id
   before_save :fetch_data_from_imdb
 
   validates :imdb_id, presence: true
   validates :imdb_id, uniqueness: { message: "movie already exists in our database of fine celluloids." }
-  validates :imdb_id, numericality: { :only_integer => true, :greater_than => 0 }
+  validates :imdb_id, numericality: { only_integer: true, greater_than: 0, message: "looks fishy." }
 
   def parse_imdb_id
     self.imdb_id = self.imdb_ref.match(/\d+/){ |m| m.to_s.to_i }

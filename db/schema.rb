@@ -11,7 +11,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120510101826) do
+ActiveRecord::Schema.define(:version => 20120510133156) do
+
+  create_table "choices", :force => true do |t|
+    t.integer  "movie_id"
+    t.integer  "event_id"
+    t.integer  "votes",      :default => 1
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "choices", ["event_id"], :name => "index_choices_on_event_id"
+  add_index "choices", ["movie_id"], :name => "index_choices_on_movie_id"
+
+  create_table "events", :force => true do |t|
+    t.date     "day"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "movies", :force => true do |t|
     t.text     "cast_members"
