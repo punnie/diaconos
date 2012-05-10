@@ -11,7 +11,7 @@
       <% end %>
     </tr>
 
-    <% Movie.unseen.highest_scored.each do |m| %>
+    <% Movie.highest_scored.each do |m| %>
     <tr>
       <td><%= m.title %></td>
       <td><%= m.rating %></td>
