@@ -1,0 +1,39 @@
+<table>
+  <tr>
+    <th>Movie title</th>
+    <th>Rating</th>
+    <th>Votes</th>
+    <% if signed_in? %>
+    <th></th>
+    <th></th>
+    <% end %>
+  </tr>
+
+  <% Movie.unseen.each do |m| %>
+  <tr>
+    <td><%= m.title %></td>
+    <td><%= m.rating %></td>
+    <td><%= m.vote_count %></td>
+    <% if signed_in? and Event.next %>
+      <td>
+        <%= button_to "Vote up", vote_movie_path(m, "up") %>
+      </td>
+      <td>
+        <%= button_to "Vote down", vote_movie_path(m, "down") %>
+      </td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+<% if signed_in? and Event.next %>
+  <%= form_for @movie do |f| %>
+    <div class="field">
+      <%= f.label :imdb_ref %><br />
+      <%= f.text_field :imdb_ref %>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% end %>
+<% end %>

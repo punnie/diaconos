@@ -8,7 +8,13 @@
 </head>
 <body>
 
-<%= yield %>
+  <% if signed_in? %>
+    <p>Logged in as <%= current_user.username %>. <%= link_to "Logout", logout_path %>.</p>
+  <% end %>
+
+  <p><%= flash[:notice] %></p>
+
+  <%= yield %>
 
 </body>
 </html>

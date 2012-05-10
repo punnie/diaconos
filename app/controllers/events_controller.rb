@@ -1,8 +1,14 @@
 class EventsController < ApplicationController
+  before_filter :authenticate, except: [:index, :show]
+
   # GET /events
   # GET /events.json
   def index
     @events = Event.all
+    @movie = Movie.new
+
+    @next_event = Event.next
+    @previous_event = Event.previous
 
     respond_to do |format|
       format.html # index.html.erb
@@ -39,7 +45,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
-        format.html { redirect_to @event, notice: 'Event was successfully created.' }
+        format.html { redirect_to root_url, notice: 'Event was successfully created.' }
         format.json { render json: @event, status: :created, location: @event }
       else
         format.html { render action: "new" }
@@ -73,6 +79,23 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to events_url }
       format.json { head :no_content }
+    end
+  end
+
+  # POST /events/:id/see/:movie_id
+  # POST /events/:id/see/:movie_id.json
+  def see
+    @event = Event.find(params[:id])
+    @movie = Movie.find(params[:movie_id])
+
+    respond_to do |format|
+      if @event.see(@movie)
+        format.html { redirect_to root_url, notice: 'Here\'s hoping you enjoyed the hat-assery.' }
+        format.json { render json: @event, status: :updated, location: @event }
+      else
+        format.html { redirect_to root_url, notice: 'Successfully failed to watch movie. New hights for stupidity. Einstein would be proud.' }
+        format.json { render json: @event.errors, status: :unprocessable_entity }
+      end
     end
   end
 end

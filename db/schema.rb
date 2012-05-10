@@ -11,44 +11,56 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120510133156) do
-
-  create_table "choices", :force => true do |t|
-    t.integer  "movie_id"
-    t.integer  "event_id"
-    t.integer  "votes",      :default => 1
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
-  end
-
-  add_index "choices", ["event_id"], :name => "index_choices_on_event_id"
-  add_index "choices", ["movie_id"], :name => "index_choices_on_movie_id"
+ActiveRecord::Schema.define(:version => 20120510160808) do
 
   create_table "events", :force => true do |t|
     t.date     "day"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "status",     :default => "unspoken"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   create_table "movies", :force => true do |t|
+    t.string   "title",                       :null => false
     t.text     "cast_members"
-    t.string   "title"
     t.string   "director"
     t.string   "genres"
     t.integer  "length"
     t.string   "mpaa_rating"
     t.string   "poster"
     t.float    "rating"
+    t.integer  "rating_votes"
     t.date     "release_date"
     t.string   "tagline"
     t.string   "trailer"
-    t.integer  "votes"
     t.integer  "year"
-    t.integer  "imdb_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "imdb_id",                     :null => false
+    t.integer  "event_id"
+    t.integer  "vote_count",   :default => 1
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
+  add_index "movies", ["event_id"], :name => "index_movies_on_event_id"
   add_index "movies", ["imdb_id"], :name => "index_movies_on_imdb_id"
+
+  create_table "users", :force => true do |t|
+    t.string   "username"
+    t.string   "email"
+    t.boolean  "admin",      :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
+  create_table "votes", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "movie_id"
+    t.string   "direction"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "votes", ["movie_id"], :name => "index_votes_on_movie_id"
+  add_index "votes", ["user_id"], :name => "index_votes_on_user_id"
 
 end

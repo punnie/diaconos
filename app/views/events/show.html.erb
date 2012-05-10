@@ -1,34 +1,34 @@
 <h1><%= @event.day %></h1>
 
-<p id="notice"><%= notice %></p>
+<% unless @event.status.eql?("eye-goggled") %>
+  <table>
+    <tr>
+      <th>Movie title</th>
+      <th>Rating</th>
+      <th>Votes</th>
+      <% if signed_in? %>
+      <th></th>
+      <% end %>
+    </tr>
 
-<table>
-  <tr>
-    <th>Movie title</th>
-    <th>Rating</th>
-    <th>Votes</th>
-    <th></th>
-    <th></th>
-  </tr>
+    <% Movie.unseen.highest_scored.each do |m| %>
+    <tr>
+      <td><%= m.title %></td>
+      <td><%= m.rating %></td>
+      <td><%= m.vote_count %></td>
+      <% if signed_in? %>
+        <td>
+          <%= button_to "See this movie", see_at_event_path(@event, m) %>
+        </td>
+      <% end %>
+    </tr>
+    <% end %>
+  </table>
+<% else %>
 
-  <% @event.choices.ordered.each do |c| %>
-  <tr>
-    <td><%= c.movie.title %></td>
-    <td><%= c.movie.rating %></td>
-    <td><%= c.votes %></td>
-    <td><%= button_to "Vote up", vote_event_choice_path(@event.id, c, "up") %></td>
-    <td><%= button_to "Vote down", vote_event_choice_path(@event.id, c, "down") %></td>
-  </tr>
-  <% end %>
-</table>
-
-<h2>Add a new movie</h2>
-
-<%= form_for [@event, @event.choices.build] do |f| %>
-  <%= f.label :movie_id %>
-  <%= f.select :movie_id, @event.available_movies.map{ |m| [m.title, m.id] } %>
-
-  <%= f.submit %>
 <% end %>
+
+<p><strong>Note:</strong> the following action cannot be undone. Proceed at your own risk.</p>
+<%= link_to 'Cancel this event', @event, confirm: 'Are you sure?', method: :delete %>
 
 <%= link_to 'Back', events_path %>

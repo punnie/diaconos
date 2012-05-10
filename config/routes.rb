@@ -1,11 +1,17 @@
 Diaconos::Application.routes.draw do
-  resources(:events, except: [:edit]) do
-    resources :choices, only: [:create] do
-      post 'vote/:direction', action: :vote, on: :member, as: "vote"
-    end
+  resources :sessions, only: [:create]
+  resources :users
+
+  resources :events, except: [:edit] do
+    post 'see/:movie_id', action: :see, on: :member, as: "see_at"
   end
 
-  resources :movies, except: [:edit, :update]
+  resources(:movies, except: [:edit, :update]) do
+    post 'vote/:direction', action: :vote, on: :member, as: "vote"
+  end
+
+  get '/login' => "sessions#new", as: "login"
+  get '/logout' => "sessions#destroy", as: "logout"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
