@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  cast_members: MyText
+  director: MyString
+  genres: MyString
+  length: 1
+  mpaa_rating: MyString
+  poster: MyString
+  rating: 1.5
+  release_date: 2012-05-10
+  tagline: MyString
+  trailer: MyString
+  votes: 1
+  year: 1
+
+two:
+  cast_members: MyText
+  director: MyString
+  genres: MyString
+  length: 1
+  mpaa_rating: MyString
+  poster: MyString
+  rating: 1.5
+  release_date: 2012-05-10
+  tagline: MyString
+  trailer: MyString
+  votes: 1
+  year: 1
