@@ -17,3 +17,6 @@
 # Ignore all vim swap files
 .*.swp
 .*.swo
+
+# Ignore development uploads
+/public/uploads

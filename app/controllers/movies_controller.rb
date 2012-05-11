@@ -31,6 +31,8 @@ class MoviesController < ApplicationController
 
     respond_to do |format|
       if @movie.save
+        @movie.update_attributes(remote_image_url: @movie.poster) unless @movie.poster.nil?
+
         format.html { redirect_to root_url, notice: 'Movie was successfully added to the poll.' }
         format.json { render json: @movie, status: :created, location: @movie }
       else

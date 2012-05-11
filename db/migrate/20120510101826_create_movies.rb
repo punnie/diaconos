@@ -18,6 +18,7 @@ class CreateMovies < ActiveRecord::Migration
 
       t.references :event
       t.integer :vote_count, default: 1
+      t.string :image
 
       t.timestamps
     end

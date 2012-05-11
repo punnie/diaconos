@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20120510160808) do
     t.integer  "imdb_id",                     :null => false
     t.integer  "event_id"
     t.integer  "vote_count",   :default => 1
+    t.string   "image"
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
   end

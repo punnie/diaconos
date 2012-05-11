@@ -3,7 +3,7 @@
     <% Movie.unseen.each do |m| %>
     <tr>
       <td class="span1">
-        <img src="<%= m.poster_url %>" style="max-width:50px; max-height: 100px;" />
+        <img src="<%= m.image_url(:thumb) %>" />
       </td>
       <td>
         <div class="">
@@ -45,7 +45,7 @@
 
 <% if signed_in? and Event.next %>
   <div class="well">
-    <%= form_for(@movie, class: "inline-form") do |f| %>
+    <%= form_for(@movie, class: "inline-form", html: { multipart: true }) do |f| %>
       <%= f.text_field :imdb_ref, class: "input", placeholder: "IMDB URL" %>
       <%= f.submit "Suggest movie", class: "btn btn-primary" %>
     <% end %>
