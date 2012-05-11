@@ -3,7 +3,7 @@
     <% Movie.unseen.each do |m| %>
     <tr>
       <td class="span1">
-        <img src="<%= m.poster_url %>" />
+        <img src="<%= m.poster_url %>" style="max-width:50px; max-height: 100px;" />
       </td>
       <td>
         <div class="">
