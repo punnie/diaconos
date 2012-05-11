@@ -1,39 +1,56 @@
-<table>
+<table class="table">
   <tr>
-    <th>Movie title</th>
-    <th>Rating</th>
-    <th>Votes</th>
-    <% if signed_in? %>
-    <th></th>
-    <th></th>
-    <% end %>
-  </tr>
+    <% Movie.unseen.each do |m| %>
+    <tr>
+      <td class="span1">
+        <img src="<%= m.poster_url %>" />
+      </td>
+      <td>
+        <div class="">
+          <p class="movie-title"><%= m.title %> (<%= m.year %>)</p>
+          <p class="movie-cast"><%= m.cast_members.join(", ").truncate(200, omission: " and no one gives a flying fuck about who the rest of the people are...") %></p>
+          <p class="movie-rating">
+            <span class="rating">
+              <% m.rating.round.times do %>
+                <span class="star star-full"></span>
+              <% end %>
 
-  <% Movie.unseen.each do |m| %>
-  <tr>
-    <td><%= m.title %></td>
-    <td><%= m.rating %></td>
-    <td><%= m.vote_count %></td>
-    <% if signed_in? and Event.next %>
-      <td>
-        <%= button_to "Vote up", vote_movie_path(m, "up") %>
+              <% (10 - m.rating.round).times do %>
+                <span class="star star-empty"></span>
+              <% end %>
+            </span>
+            <span class="rating-votes">
+              (<%= m.rating_votes %> votes)
+            </span>
+          </p>
+        </div>
       </td>
-      <td>
-        <%= button_to "Vote down", vote_movie_path(m, "down") %>
-      </td>
+      <% if signed_in? and Event.next %>
+        <td class="span2">
+          <%= form_tag(vote_movie_path(m, "up"), class: "pull-right form-inline") do %>
+            <button type="submit" class="btn btn-danger btn-mini" <%= vote_disabled?(m, "down") %>>
+              <i class="icon-minus"></i>
+            </button>
+          <% end %>
+
+          <span class="pull-right score"><%= m.vote_count %></span>
+
+          <%= form_tag(vote_movie_path(m, "up"), class: "pull-right form-inline") do %>
+            <button type="submit" class="btn btn-success btn-mini" <%= vote_disabled?(m, "up") %>>
+              <i class="icon-plus"></i>
+            </button>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
     <% end %>
-  </tr>
-  <% end %>
 </table>
 
 <% if signed_in? and Event.next %>
-  <%= form_for @movie do |f| %>
-    <div class="field">
-      <%= f.label :imdb_ref %><br />
-      <%= f.text_field :imdb_ref %>
-    </div>
-    <div class="actions">
-      <%= f.submit %>
-    </div>
-  <% end %>
+  <div class="well">
+    <%= form_for(@movie, class: "inline-form") do |f| %>
+      <%= f.text_field :imdb_ref, class: "input", placeholder: "IMDB URL" %>
+      <%= f.submit "Suggest movie", class: "btn btn-primary" %>
+    <% end %>
+  </div>
 <% end %>

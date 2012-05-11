@@ -18,7 +18,6 @@ class Movie < ActiveRecord::Base
   validates :imdb_id, numericality: { only_integer: true, greater_than: 0, message: "looks fishy." }
 
   default_scope order("vote_count DESC, title ASC")
-  scope :highest_scored, find_by_sql("select * from movies where vote_count = (select max(vote_count) from movies where event_id is null) and event_id is null")
 
   def add_first_vote
     first_vote = votes.build(user_id: creating_user.id, direction: "up")
@@ -63,6 +62,11 @@ class Movie < ActiveRecord::Base
 
   def seen?
     not event.nil?
+  end
+
+  def poster_url
+    return "http://placekitten.com/120/200" if self.poster.blank?
+    self.poster
   end
 
   def vote(direction, user)

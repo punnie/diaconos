@@ -20,7 +20,9 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+gem 'less'
 gem 'jquery-rails'
+gem 'twitter-bootstrap-rails'
 gem 'imdb'
 
 # To use ActiveModel has_secure_password

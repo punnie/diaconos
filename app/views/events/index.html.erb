@@ -1,28 +1,36 @@
-<h1>Listing events</h1>
+<div class="row">
+  <h1>Listing events</h1>
 
-<table>
-  <tr>
-    <th>Day</th>
-    <th></th>
-    <th></th>
-  </tr>
+  <table class="table table-striped">
+    <tr>
+      <th>Day</th>
+      <th></th>
+      <th></th>
+    </tr>
 
-<% @events.each do |event| %>
-  <tr>
-    <td><%= event.day %></td>
-    <td><%= link_to 'Show', event %></td>
-    <td><%= link_to 'Destroy', event, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
-<% end %>
-</table>
+  <% @events.each do |event| %>
+    <tr>
+      <td><%= event.day %></td>
+      <td><%= link_to 'Show', event %></td>
+      <td><%= link_to 'Destroy', event, confirm: 'Are you sure?', method: :delete %></td>
+    </tr>
+  <% end %>
+  </table>
 
-<br />
-<%= link_to 'New Event', new_event_path %>
+  <div class="well">
+    <%= link_to 'New Event', new_event_path, class: "btn btn-primary" %>
+  </div>
+</div>
 
-  <h2>Voting poll</h2>
+<div class="row">
+  <h2>Suggested flicks</h2>
 
   <% if @next_event.nil? %>
-    <p><strong>Note:</strong> there is no next session, so voting is disabled to encourage the scheduling.</p>
+    <p>
+      <span class="label label-info">Note</span>
+      As there is no next session, voting in and suggesting movies is disabled to encourage the scheduling.
+    </p>
   <% end %>
 
   <%= render 'movies/table' %>
+</div>

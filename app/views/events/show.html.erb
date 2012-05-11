@@ -11,12 +11,12 @@
       <% end %>
     </tr>
 
-    <% Movie.highest_scored.each do |m| %>
+    <% Movie.unseen.each do |m| %>
     <tr>
       <td><%= m.title %></td>
       <td><%= m.rating %></td>
       <td><%= m.vote_count %></td>
-      <% if signed_in? %>
+      <% if signed_in? and m.vote_count.eql?(Movie.maximum(:vote_count)) %>
         <td>
           <%= button_to "See this movie", see_at_event_path(@event, m) %>
         </td>

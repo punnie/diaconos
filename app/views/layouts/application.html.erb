@@ -1,20 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Diaconos</title>
+  <title>Diáconos</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+
+  <style type="text/css" media="screen">
+    .btn {
+      vertical-align: top;
+    }
+
+    .movie-title {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .movie-director {
+      font-size: 0.9em;
+      line-height: 0.9em;
+    }
+
+    .movie-cast {
+      font-size: 0.8em;
+      line-height: 1em;
+      text-transform: uppercase;
+    }
+  </style>
 </head>
+
 <body>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <%= link_to "Diáconos", root_url, class: "brand" %>
+        <% if signed_in? %>
+          <div class="btn-group pull-right">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+              <i class="icon-user"></i>
+              <%= current_user.username %>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Profile", current_user %></li>
+              <li class="divider"></li>
+              <li><%= link_to "Sign out", logout_path %></li>
+            </ul>
+          </div>
+        <% else %>
+          <%= form_tag(sessions_path, class: "navbar-form pull-right", id: "signin-form") do %>
+            <%= text_field_tag('user[username]', '', class: "input-small", placeholder: "Username") %>
+            <%= password_field_tag('user[password]', '', class: "input-small", placeholder: "Password") %>
+            <%= submit_tag 'Sign in', class: "btn" %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 
-  <% if signed_in? %>
-    <p>Logged in as <%= current_user.username %>. <%= link_to "Logout", logout_path %>.</p>
-  <% end %>
+  <div class="container">
+    <% unless notice.blank? %>
+      <div class="alert alert-info">
+        <button class="close" data-dismiss="alert">×</button>
+        <%= notice %>
+      </div>
+    <% end %>
 
-  <p><%= flash[:notice] %></p>
-
-  <%= yield %>
+    <%= yield %>
+  </div>
 
 </body>
 </html>
