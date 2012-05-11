@@ -8,7 +8,7 @@
       <td>
         <div class="">
           <p class="movie-title"><%= m.title %> (<%= m.year %>)</p>
-          <p class="movie-cast"><%= m.cast_members.join(", ").truncate(200, omission: " and no one gives a flying fuck about who the rest of the people are...") %></p>
+          <p class="movie-cast"><%= m.cast_members[0..20].join(", ") %>, and as for the rest, no one really cares..</p>
           <p class="movie-rating">
             <span class="rating">
               <% m.rating.round.times do %>
@@ -19,15 +19,12 @@
                 <span class="star star-empty"></span>
               <% end %>
             </span>
-            <span class="rating-votes">
-              (<%= m.rating_votes %> votes)
-            </span>
           </p>
         </div>
       </td>
       <% if signed_in? and Event.next %>
-        <td class="span2">
-          <%= form_tag(vote_movie_path(m, "up"), class: "pull-right form-inline") do %>
+        <td class="span2 score-controls">
+          <%= form_tag(vote_movie_path(m, "down"), class: "pull-right form-inline") do %>
             <button type="submit" class="btn btn-danger btn-mini" <%= vote_disabled?(m, "down") %>>
               <i class="icon-minus"></i>
             </button>
