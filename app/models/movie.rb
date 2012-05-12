@@ -7,7 +7,7 @@ class Movie < ActiveRecord::Base
   serialize :genres, Array
 
   belongs_to :event
-  has_many :votes
+  has_many :votes, dependent: :destroy
 
   before_validation :parse_imdb_id
   before_create :fetch_data_from_imdb

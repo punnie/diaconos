@@ -6,9 +6,15 @@ class EventsController < ApplicationController
   def index
     @events = Event.all
     @movie = Movie.new
+    @event = Event.new
 
     @next_event = Event.next
     @previous_event = Event.previous
+
+    @current_month = Date.new(params[:year].to_i, params[:month].to_i, 1) rescue Date.today
+
+    @next_month = (@current_month + 1.month)
+    @previous_month = (@current_month - 1.month)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -48,7 +54,7 @@ class EventsController < ApplicationController
         format.html { redirect_to root_url, notice: 'Event was successfully created.' }
         format.json { render json: @event, status: :created, location: @event }
       else
-        format.html { render action: "new" }
+        format.html { redirect_to root_url, notice: "That date has already been taken." }
         format.json { render json: @event.errors, status: :unprocessable_entity }
       end
     end

@@ -2,7 +2,7 @@ Diaconos::Application.routes.draw do
   resources :sessions, only: [:create]
   resources :users
 
-  resources :events, except: [:edit] do
+  resources :events, except: [:edit, :update, :new] do
     post 'see/:movie_id', action: :see, on: :member, as: "see_at"
   end
 
@@ -12,6 +12,8 @@ Diaconos::Application.routes.draw do
 
   get '/login' => "sessions#new", as: "login"
   get '/logout' => "sessions#destroy", as: "logout"
+  get '/register' => "users#new", as: "register"
+  get '/profile' => "users#show", as: "profile"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

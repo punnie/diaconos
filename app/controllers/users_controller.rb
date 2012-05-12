@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate
+  before_filter :authenticate, except: [:new, :create]
 
   # GET /users
   # GET /users.json
@@ -15,11 +15,17 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @user = User.find(params[:id])
+    @user = User.find(params[:id]) rescue current_user
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @user }
+    if (current_user.admin? or current_user.eql?(@user))
+      respond_to do |format|
+        format.html # show.html.erb
+        format.json { render json: @user }
+      end
+    else
+      respond_to do |format|
+        format.html { render file: "public/401.html", status: :unauthorized }
+      end
     end
   end
 
@@ -37,6 +43,10 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @user = User.find(params[:id])
+
+    unless (current_user.admin? or current_user.eql?(@user))
+      render file: "public/401.html", status: :unauthorized
+    end
   end
 
   # POST /users
@@ -59,14 +69,21 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     @user = User.find(params[:id])
+    raise ActiveResource::UnauthorizedAccess unless (current_user.admin? or current_user.eql?(@user))
 
-    respond_to do |format|
-      if @user.update_attributes(params[:user])
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+    if (current_user.admin? or current_user.eql?(@user))
+      respond_to do |format|
+        if @user.update_attributes(params[:user])
+          format.html { redirect_to @user, notice: 'User was successfully updated.' }
+          format.json { head :no_content }
+        else
+          format.html { render action: "edit" }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        format.html { render file: "public/401.html", status: :unauthorized }
       end
     end
   end
@@ -75,11 +92,16 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
 
-    respond_to do |format|
-      format.html { redirect_to users_url }
-      format.json { head :no_content }
+    if (current_user.admin?)
+      render file: "public/401.html", status: :unauthorized
+    else
+      @user.destroy
+
+      respond_to do |format|
+        format.html { redirect_to users_url }
+        format.json { head :no_content }
+      end
     end
   end
 end

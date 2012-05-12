@@ -28,7 +28,7 @@
         <% else %>
           <%= form_tag(sessions_path, class: "navbar-form pull-right", id: "signin-form") do %>
             <%= text_field_tag('user[username]', '', class: "input-small", placeholder: "Username") %>
-            <%= password_field_tag('user[password]', '', class: "input-small", placeholder: "Password") %>
+            <%= password_field_tag('user[password_attempt]', '', class: "input-small", placeholder: "Password") %>
             <%= submit_tag 'Sign in', class: "btn" %>
           <% end %>
         <% end %>

@@ -4,8 +4,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    # effectively authenticate
-    @user = User.find_by_username(params[:user][:username])
+    @user = User.authenticate!(params[:user])
 
     if(@user)
       session[:current_user] = @user.id
