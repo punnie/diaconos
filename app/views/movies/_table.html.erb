@@ -26,7 +26,7 @@
         <td class="span2 score-controls">
           <%= form_tag(vote_movie_path(m, "down"), class: "pull-right form-inline") do %>
             <button type="submit" class="btn btn-danger btn-mini" <%= vote_disabled?(m, "down") %>>
-              <i class="icon-minus"></i>
+              <i class="icon-thumbs-down"></i>
             </button>
           <% end %>
 
@@ -34,7 +34,7 @@
 
           <%= form_tag(vote_movie_path(m, "up"), class: "pull-right form-inline") do %>
             <button type="submit" class="btn btn-success btn-mini" <%= vote_disabled?(m, "up") %>>
-              <i class="icon-plus"></i>
+              <i class="icon-thumbs-up"></i>
             </button>
           <% end %>
         </td>

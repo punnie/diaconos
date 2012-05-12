@@ -1,14 +1,24 @@
 <p id="notice"><%= notice %></p>
 
+<h1><%= @user.username %></h1>
+
+<h2>Votes</h2>
 <p>
-  <b>Username:</b>
-  <%= @user.username %>
+  <span class="label label-info">Note</span>
+  Other users can't see what you've voted for, hopefully.
 </p>
 
-<p>
-  <b>Email:</b>
-  <%= @user.email %>
-</p>
+<% if @user.votes.empty? %>
+  <p>
+    It seems you haven't voted for anything, yet.
+  </p>
+<% else %>
+  <ul>
+    <% @user.votes.all(include: :movie, order: "votes.direction DESC, movies.title ASC").each do |v| %>
+      <li class="<%= icon_for_vote(v) %>"><%= v.movie.title %></li>
+    <% end %>
+  </ul>
+<% end %>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
