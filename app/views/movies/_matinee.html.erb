@@ -8,9 +8,11 @@
         <div class="span9 pull-left">
           <h3><%= m.title %> (<%= m.year %>)</h3>
 
-          <p class="movie-tagline">
-            <%= m.tagline[0..-15] %>
-          </p>
+          <% if m.tagline? %>
+            <p class="movie-tagline">
+              <%= m.tagline[0..-15] %>
+            </p>
+          <% end %>
 
           <p class="movie-cast"><%= m.director.join(", ") %></p>
           <p class="movie-cast"><%= m.cast_members.join(", ") %></p>
