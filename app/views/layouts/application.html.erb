@@ -20,9 +20,19 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li><%= link_to "Profile", current_user %></li>
+              <li>
+                <%= link_to  current_user do %>
+                  <i class="icon-user"></i>
+                  Profile
+                <% end %>
+              </li>
               <li class="divider"></li>
-              <li><%= link_to "Sign out", logout_path %></li>
+              <li>
+                <%= link_to logout_path do %>
+                  <i class="icon-signout"></i>
+                  Sign out
+                <% end %>
+              </li>
             </ul>
           </div>
         <% else %>
@@ -45,7 +55,11 @@
     <% end %>
 
     <%= yield %>
-  </div>
 
+    <footer>
+      <hr></hr>
+      <p><i class="icon-info-sign"></i> Diáconos is a crapola project done by <%= link_to "Pedro Coelho", "https://pedrocoelho.pt" %>, <%= Date.today.year %>. <i class="icon-github-sign"></i> Check out the source at <%= link_to "Github", "https://github.com/punnie/diaconos" %>!</p>
+    </footer>
+  </div>
 </body>
 </html>

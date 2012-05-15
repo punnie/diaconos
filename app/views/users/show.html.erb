@@ -2,23 +2,61 @@
 
 <h1><%= @user.username %></h1>
 
-<h2>Votes</h2>
-<p>
-  <span class="label label-info">Note</span>
-  Other users can't see what you've voted for, hopefully.
-</p>
+<div class="row">
+  <div class="span6">
+    <h2>Personal information</h2>
+    <p>
+      <span class="label label-info">Privacy policy</span>
+      Your personal information, including your email, may be used for dubious purposes, including marketing, trolling and other affiliated businesses. Basically, if I can sell this to spammers for a reasonable price &mdash; as in, more than €0 &mdash; I will.
+    </p>
 
-<% if @user.votes.empty? %>
-  <p>
-    It seems you haven't voted for anything, yet.
-  </p>
-<% else %>
-  <ul>
-    <% @user.votes.all(include: :movie, order: "votes.direction DESC, movies.title ASC").each do |v| %>
-      <li class="<%= icon_for_vote(v) %>"><%= v.movie.title %></li>
+    <p>
+      <strong>Username</strong><br/>
+      <%= @user.username %>
+    </p>
+
+    <p>
+      <strong>Email</strong><br/>
+      <%= @user.email %>
+    </p>
+
+  </div>
+
+  <div class="span6">
+    <h2>Votes</h2>
+    <p>
+      <span class="label label-info">Note</span>
+      Other users can't see what you've voted for, hopefully.
+    </p>
+
+    <% if @user.votes.empty? %>
+      <p>
+        It seems you haven't voted for anything, yet.
+      </p>
+    <% else %>
+      <ul>
+        <% @user.votes.all(include: :movie, order: "votes.direction DESC, movies.title ASC").each do |v| %>
+          <li class="<%= icon_for_vote(v) %>"><%= v.movie.title %></li>
+        <% end %>
+      </ul>
     <% end %>
-  </ul>
-<% end %>
+  </div>
+</div>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<div class="well">
+  <div class="pull-left">
+    <%= link_to edit_user_path(@user), class: "btn btn-primary" do %>
+      <i class="icon-edit"></i>
+      Edit your profile
+    <% end %>
+
+    <%= link_to 'Go back', root_path, class: "btn" %>
+  </div>
+
+  <div class="pull-right">
+    <%= link_to @user, method: :delete, confirm: "Sure about that, fella?", class: "btn btn-danger" do %>
+      <i class="icon-road"></i>
+      Quit this shit
+    <% end %>
+  </div>
+</div>

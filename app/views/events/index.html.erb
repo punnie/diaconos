@@ -1,53 +1,49 @@
-<div class="row">
-  <h1>Calendar</h1>
+<h1>Calendar</h1>
 
-  <h2 class="pull-right">
-    <%= %w[January February March April May June July August September October November December][@current_month.month-1] %>, <%= @current_month.year %>
-  </h2>
+<h2 class="pull-right">
+  <%= %w[January February March April May June July August September October November December][@current_month.month-1] %>, <%= @current_month.year %>
+</h2>
 
-  <%= calendar_for(@events, year: @current_month.year, month: @current_month.month, html: { class: "table table-bordered table-striped", id: "calendar" }) do |t| %>
-    <%= t.head('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') %>
-    <%= t.day(day_method: :day) do |day, events| %>
-      <p class="day">
-        <%= day.day %>
-      </p>
-      <p style="min-height: 1.5em; text-align: right">
-        <% if events.empty? %>
-        <% else %>
-          <% events.each do |event| %>
-            <%= link_to "Movie session", event %>
-          <% end %>
+<%= calendar_for(@events, year: @current_month.year, month: @current_month.month, html: { class: "table table-bordered table-striped", id: "calendar" }) do |t| %>
+  <%= t.head('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday') %>
+  <%= t.day(day_method: :day) do |day, events| %>
+    <p class="day">
+      <%= day.day %>
+    </p>
+    <p style="min-height: 1.5em; text-align: right">
+      <% if events.empty? %>
+      <% else %>
+        <% events.each do |event| %>
+          <%= link_to "Movie session", event %>
         <% end %>
-      </p>
-    <% end %>
+      <% end %>
+    </p>
   <% end %>
+<% end %>
 
-  <div class="well">
-    <div class="pull-left">
-      <%= link_to 'New movie session', "#new-event", class: "btn btn-primary", data: { toggle: "modal" } %>
-    </div>
+<div class="well">
+  <div class="pull-left">
+    <%= link_to 'New movie session', "#new-event", class: "btn btn-primary", data: { toggle: "modal" } %>
+  </div>
 
-    <div class="pull-right">
-      <div class="btn-group">
-        <%= link_to 'Previous month', events_path(month: @previous_month.month, year: @previous_month.year), class: "btn", data: { toggle: "modal" } %>
-        <%= link_to 'Next month', events_path(month: @next_month.month, year: @next_month.year), class: "btn", data: { toggle: "modal" } %>
-      </div>
+  <div class="pull-right">
+    <div class="btn-group">
+      <%= link_to 'Previous month', events_path(month: @previous_month.month, year: @previous_month.year), class: "btn", data: { toggle: "modal" } %>
+      <%= link_to 'Next month', events_path(month: @next_month.month, year: @next_month.year), class: "btn", data: { toggle: "modal" } %>
     </div>
   </div>
 </div>
 
-<div class="row">
-  <h2>Suggested flicks</h2>
+<h2>Suggested flicks</h2>
 
-  <% if @next_event.nil? %>
-    <p>
-      <span class="label label-info">Note</span>
-      As there is no next session, voting in and suggesting movies is disabled to encourage the scheduling.
-    </p>
-  <% end %>
+<% if @next_event.nil? %>
+  <p>
+    <span class="label label-info">Note</span>
+    As there is no next session, voting in and suggesting movies is disabled to encourage the scheduling.
+  </p>
+<% end %>
 
-  <%= render 'movies/table' %>
-</div>
+<%= render 'movies/table' %>
 
 <div class="modal fade" id="new-event" data-show="false">
   <div class="modal-header">
