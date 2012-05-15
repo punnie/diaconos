@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120512180259) do
+ActiveRecord::Schema.define(:version => 20120515131040) do
 
   create_table "events", :force => true do |t|
     t.date     "day"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20120512180259) do
     t.string   "image"
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
+    t.text     "plot"
   end
 
   add_index "movies", ["event_id"], :name => "index_movies_on_event_id"

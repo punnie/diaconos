@@ -52,6 +52,7 @@ class Movie < ActiveRecord::Base
     self.trailer = imdb_data.trailer_url
     self.rating_votes = imdb_data.votes
     self.year = imdb_data.year
+    self.plot = imdb_data.plot
   end
 
   def self.seen

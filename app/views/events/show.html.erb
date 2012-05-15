@@ -1,32 +1,15 @@
-<h1><%= @event.day %></h1>
+<h1>Movie session on the <%= @event.day.day.ordinalize %> of <%= @event.day.month %>, <%= @event.day.year %></h1>
 
 <% if @event.status.eql?("eye-goggled") %>
+  <h2>Le matinée passé</h2>
+  <%= render "movies/matinee", m: @event.movie, enable_button: false %>
 <% elsif Event.next.eql?(@event) %>
-  <table>
-    <tr>
-      <th>Movie title</th>
-      <th>Rating</th>
-      <th>Votes</th>
-      <% if signed_in? %>
-      <th></th>
-      <% end %>
-    </tr>
-
-    <% Movie.unseen.each do |m| %>
-    <tr>
-      <td><%= m.title %></td>
-      <td><%= m.rating %></td>
-      <td><%= m.vote_count %></td>
-      <% if signed_in? and m.vote_count.eql?(Movie.maximum(:vote_count)) %>
-        <td>
-          <%= button_to "See this movie", see_at_event_path(@event, m) %>
-        </td>
-      <% end %>
-    </tr>
+  <h2>Le matinée</h2>
+  <% Movie.unseen.each do |m| %>
+    <% if m.vote_count.eql?(Movie.maximum(:vote_count)) %>
+      <%= render "movies/matinee", m: m, enable_button: true %>
     <% end %>
-  </table>
-<% else %>
-
+  <% end %>
 <% end %>
 
 <% if signed_in? and current_user.admin? %>
@@ -34,4 +17,6 @@
   <%= link_to 'Cancel this event', @event, confirm: 'Are you sure?', method: :delete %>
 <% end %>
 
-<%= link_to 'Back', events_path %>
+<div class="well">
+  <%= link_to 'Back', root_path, class: "btn" %>
+</div>
