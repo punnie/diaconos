@@ -1,7 +1,19 @@
+## For development purposes only
+##
+## Usage:
+##
+## - docker-compose up app script/web      : boots a webserver with your
+##                                           application
+## - docker-compose run app script/console : boots up a console with your
+##                                           application in the development
+##                                           environment
+## - docker-compose run app [COMMAND]      : runs any command in your
+##                                           application container
+##                                           (hint: try "bash")
 version: '3'
 
 services:
-  web:
+  app:
     build:
       context: .
       dockerfile: env/dev/Dockerfile
@@ -16,38 +28,14 @@ services:
       - .:/usr/src/app
     command: script/web
 
-  console:
-    build:
-      context: .
-      dockerfile: env/dev/Dockerfile
-    environment:
-      - DATABASE_URL=postgres://dbuser:dbsecret@postgres.local:5432/diaconos_dev
-    depends_on:
-      - postgres
-    volumes:
-      - bundler-cache:/usr/local/bundle
-      - .:/usr/src/app
-    command: script/console
-
-  bash:
-    build:
-      context: .
-      dockerfile: env/dev/Dockerfile
-    environment:
-      - DATABASE_URL=postgres://dbuser:dbsecret@postgres.local:5432/diaconos_dev
-    depends_on:
-      - postgres
-    volumes:
-      - bundler-cache:/usr/local/bundle
-      - .:/usr/src/app
-    entrypoint: bundle exec
-
   postgres:
     image: postgres
     environment:
       - POSTGRES_PASSWORD=dbsecret
       - POSTGRES_USER=dbuser
       - POSTGRES_DB=diaconos_dev
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
     networks:
       default:
         aliases:
@@ -58,3 +46,4 @@ networks:
 
 volumes:
   bundler-cache:
+  postgresql-data:
