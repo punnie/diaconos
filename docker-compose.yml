@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: env/dev/Dockerfile
+    environment:
+      - DATABASE_URL=postgres://dbuser:dbsecret@postgres.local:5432/diaconos_dev
+    depends_on:
+      - postgres
+    ports:
+      - 3000:3000
+    volumes:
+      - bundler-cache:/usr/local/bundle
+      - .:/usr/src/app
+    command: script/web
+
+  console:
+    build:
+      context: .
+      dockerfile: env/dev/Dockerfile
+    environment:
+      - DATABASE_URL=postgres://dbuser:dbsecret@postgres.local:5432/diaconos_dev
+    depends_on:
+      - postgres
+    volumes:
+      - bundler-cache:/usr/local/bundle
+      - .:/usr/src/app
+    command: script/console
+
+  bash:
+    build:
+      context: .
+      dockerfile: env/dev/Dockerfile
+    environment:
+      - DATABASE_URL=postgres://dbuser:dbsecret@postgres.local:5432/diaconos_dev
+    depends_on:
+      - postgres
+    volumes:
+      - bundler-cache:/usr/local/bundle
+      - .:/usr/src/app
+    entrypoint: bundle exec
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=dbsecret
+      - POSTGRES_USER=dbuser
+      - POSTGRES_DB=diaconos_dev
+    networks:
+      default:
+        aliases:
+          - postgres.local
+
+networks:
+  default:
+
+volumes:
+  bundler-cache:
